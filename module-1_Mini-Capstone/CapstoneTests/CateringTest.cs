@@ -7,14 +7,14 @@ namespace CapstoneTests
     public class CateringTest
     {
         [TestMethod]
-        public void Check_that_catering_object_is_created()
+        public void CateringInstanceShouldBeCreated()
         {
             // Arrange 
             Catering catering = new Catering();
 
             // Act
 
-            //Assert
+            // Assert
             Assert.IsNotNull(catering);
         }
     }
