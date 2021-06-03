@@ -22,10 +22,10 @@ They’re releasing a new application that can be integrated with the customer�
 3. Catering inventory is stocked via an input file.
 4. The catering system is automatically restocked each time the application runs.
 5. When the customer selects ​(1) Display Catering Items, their information  is shown.
-    - Each catering product has a product code identifier, name, purchase price, and quanity.
+    - Each catering product has a product code identifier, name, purchase price, and quantity.
     - Each item in the catering system has enough room for 50 of that product.
     - Every product is initially stocked to the maximum amount.
-    - A product which has run out should indicate it is SOLD OUT, otherwise it should display the quanity remaining.
+    - A product which has run out should indicate it is SOLD OUT, otherwise it should display the quantity remaining.
 6. When the customer selects (2) Order they are guided through the purchase menu:
 
         
@@ -37,7 +37,7 @@ They’re releasing a new application that can be integrated with the customer�
    Selecting any items from the purchase menu except (3) returns to the purchase menu. Selecting 3 from the purchase menu returns to the main menu.
 
 7. The purchase process flow is as follows
-  - Selecting (1) Add Money ​A customer can repeatedly feed money into the machine in any whole dollar amounts up to $5000 (e.g. $1, $3, $5, $15, $20, $100, etc.)
+  - Selecting (1) Add Money ​A customer can repeatedly feed money into their account in any whole dollar amounts up to $5000 (e.g. $1, $3, $5, $15, $20, $100, $2918, etc.)
     - The Current Account Balance should not be able to exceed $5000 at any time
     - Customers should be able to add money multiple times so they can replenish their balance at any time, provided they never go above $5000. 
     - The Current Account Balance indicates how much money the customer has available in their account.
@@ -46,9 +46,9 @@ They’re releasing a new application that can be integrated with the customer�
     - If a product is sold out, the customer is informed and returned to the Purchase menu.
     - If not enough of the product is in stock for the amount the customer requested then they should be informed there is insufficient stock.  
     - If a valid product is selected it is marked as purchased.
-    - There is not a requirement to combine sumular items (27 X E1 Pork Chops and 13 X  E1 Port Chops)
+    - There is not a requirement to combine similar items (27 X E1 Pork Chops and 13 X  E1 Pork Chops)
     - After the product is purchased, the balance should be updated accordingly and the customer returned to the Order menu.
-  - Selecting ​(3) Complete Transaction​ allows the customer to complete the transaction and receive a report of the products they ordered and any remaining change back.
+  - Selecting ​(3) Complete Transaction​ allows the customer to complete the transaction and receive a report of the products they ordered and lists any remaining change they should receive back in the mail.
       - The customer’s money is returned using nickels, dimes, quarters, ones, fives, tens, and twenties. (using the smallest amount of bills and coins possible).
     - The customer’s current balance should be updated to $0 remaining.
     - A report should be displayed that shows the items purchased, the amount of each item, the total cost for those items, and the total amount for the order. 
@@ -80,11 +80,11 @@ They’re releasing a new application that can be integrated with the customer�
         - NUMBER_ORDERED  PRODUCT_NAME  PRODUCT_CODE
       - The audit entries should be in the format:
 ```
-        	01/01/2019 12:00:00 PM ADD MONEY: $500.00 $500.00
-            01/01/2019 12:00:15 PM ADD MONEY: $250.00 $750.00
-            01/01/2019 12:00:20 PM 15 Chicken E4 $112.50 $637.50
-            01/01/2019 12:01:25 PM 9 Red Wine B2 $29.25 $608.25
-            01/01/2019 12:01:35 PM GIVE CHANGE: $608.25 $0.00
+        	01/01/2021 12:00:00 PM ADD MONEY: $500.00 $500.00
+            01/01/2021 12:00:15 PM ADD MONEY: $250.00 $750.00
+            01/01/2021 12:00:20 PM 15 Chicken E4 $112.50 $637.50
+            01/01/2021 12:01:25 PM 9 Red Wine B2 $29.25 $608.25
+            01/01/2021 12:01:35 PM GIVE CHANGE: $608.25 $0.00
 ```
 
 

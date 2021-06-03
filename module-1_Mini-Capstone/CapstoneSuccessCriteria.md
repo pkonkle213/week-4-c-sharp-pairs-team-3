@@ -31,7 +31,7 @@
 
 *   Methods do their work based on parameters and return a value
 *   Minimum number of class-level variables
-*   ALL Console.ReadLine and Console.WriteLine statements isolated in one (un-testable) module.
+*   ALL Console.ReadLine and Console.WriteLine statements isolated in one (un-testable) class.
 
 **What is not important?**
 
@@ -61,7 +61,9 @@ Good code matters!   So the project will also be judged not only on the function
 
 
 
-*   Having Console.ReadLine or Console.WriteLine statements  in more than 1 class
+*   Having Console.ReadLine or Console.WriteLine statements in more than 1 class
+*   Procrastination
+*   Using Static
 *   Re-reading the inventory each time the items are accessed
 *   Writing code that depends on having the same data in the input file each time
 *   Not handling exceptions or having empty catch blocks
