@@ -9,14 +9,14 @@ namespace Capstone
     /// <remarks>
     /// You should not need to modify this file. If you believe you do, ask your instructor.
     /// </remarks>
-    class Program
+    public class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
-            //This is the only code that goes here
-            //Do not change this code
+            // This is the only code that goes here
+            // DO NOT CHANGE THIS CODE
             UserInterface userInterface = new UserInterface();
-            userInterface.RunInterface();
+            userInterface.RunMainMenu();
         }
     }
 }

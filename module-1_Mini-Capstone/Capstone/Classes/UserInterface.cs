@@ -8,14 +8,11 @@ namespace Capstone.Classes
     /// This class provides all user communications, but not much else.
     /// All the "work" of the application should be done elsewhere
     /// </summary>
-    /// <remarks>
-    /// ALL instances of Console.ReadLine and Console.WriteLine in your application should be in this class
-    /// </remarks>
     public class UserInterface
     {
         private Catering catering = new Catering();
 
-        public void RunInterface()
+        public void RunMainMenu()
         {
             bool done = false;
 

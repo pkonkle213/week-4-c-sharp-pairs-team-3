@@ -7,7 +7,7 @@ namespace CapstoneTests
     public class CateringTest
     {
         [TestMethod]
-        public void CateringInstanceShouldBeCreated()
+        public void YourTestGoesHere()
         {
             // Arrange 
             Catering catering = new Catering();
@@ -15,7 +15,7 @@ namespace CapstoneTests
             // Act
 
             // Assert
-            Assert.IsNotNull(catering);
+            Assert.Inconclusive("Replace this test with a test of your own..."); // Inconclusive is a marker for when something cannot be tested
         }
     }
 }

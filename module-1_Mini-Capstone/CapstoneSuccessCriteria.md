@@ -26,12 +26,14 @@
 *   Data exists in one place (not multiple places)
 *   Functionality exists in one place (not multiple places)
 *   Methods “return”, don’t call other methods in a circular manner
+    - Bad Pattern: MethodA calls MethodB which calls MethodA.
+    - Good Pattern: MethodA calls MethodB which returns when complete. MethodA uses a while loop to repeat itself as needed.
 
 **Is it testable?**
 
 *   Methods do their work based on parameters and return a value
 *   Minimum number of class-level variables
-*   ALL Console.ReadLine and Console.WriteLine statements isolated in one (un-testable) class.
+*   All Console.ReadLine and Console.WriteLine statements isolated in one (un-testable) class - with the possible exception of error handling for File IO.
 
 **What is not important?**
 
@@ -64,6 +66,7 @@ Good code matters!   So the project will also be judged not only on the function
 *   Having Console.ReadLine or Console.WriteLine statements in more than 1 class
 *   Procrastination
 *   Using Static
+*   Using Environment.Exit(0)
 *   Re-reading the inventory each time the items are accessed
 *   Writing code that depends on having the same data in the input file each time
 *   Not handling exceptions or having empty catch blocks
@@ -77,7 +80,7 @@ Good code matters!   So the project will also be judged not only on the function
 *   Writing code that is not unit testable
 *   Saving Unit Tests for the end
 *   No Unit Tests
-*   Trying to write everything at one time instead of dividing the functionality
+*   Trying to write everything at one time instead of attacking one feature at a time
 *   Not pairing
 *   Not communicating, especially concerning expectations and availability over the weekend
 *   Not asking questions when you are stuck or don’t understand how to do what you need to do
