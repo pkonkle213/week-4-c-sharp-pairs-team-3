@@ -11,10 +11,9 @@ namespace Capstone.Classes
     public class UserInterface
     {
         private Catering catering = new Catering();
+        private FileAccess fileAccess = new FileAccess();
 
         private decimal balance = 0M;
-
-        private FileAccess fileAccess = new FileAccess();
 
         public void RunMainMenu()
         {
@@ -55,7 +54,6 @@ namespace Capstone.Classes
                 }
             }
         }
-
         private void DisplayItems()
         {
             Console.WriteLine("Type Code Name                 Price   Quantity");
@@ -141,6 +139,51 @@ namespace Capstone.Classes
 
         public void SelectProduct()
         {
+            List<OrderItems> items = new List<OrderItems>();
+
+            Console.WriteLine("Enter a product code");
+            string productCode = Console.ReadLine();
+
+            Console.WriteLine("Enter Quantity");
+            string quantity = Console.ReadLine();
+
+            int quantityInt = int.Parse(quantity);
+
+            bool exists = false;
+
+            foreach (CateringItem item in this.catering.AllItems)
+            {
+                if (productCode == item.Code)
+                {
+                    exists = true;
+
+                    if (quantityInt > item.Quantity)
+                    {
+                        Console.WriteLine("Not enough items to fulfill");
+                    }
+                    else
+                    {
+                        item.Quantity -= quantityInt;
+
+                        OrderItems orderedItems = new OrderItems();
+
+                        orderedItems.OrderQuantity = quantityInt;
+                        orderedItems.Type = item.Type;
+                        orderedItems.Code = item.Code;
+                        orderedItems.Name = item.Name;
+                        orderedItems.Price = item.Price;
+                    }
+                }
+
+
+            }
+
+            if (exists == false)
+            {
+                Console.WriteLine("The product doesn't exist");
+            }
+
+
 
         }
 
