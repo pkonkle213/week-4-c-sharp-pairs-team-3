@@ -18,8 +18,10 @@ namespace Capstone.Classes
 
         public void RunMainMenu()
         {
-            bool done = false;
             fileAccess.LoadMenu(catering);
+
+            bool done = false;
+            
             while (!done)
             {
                 Console.WriteLine("Welcome to Deerendra and Phillip's Capstone");
@@ -65,17 +67,83 @@ namespace Capstone.Classes
                 Console.Write(item.Code.PadRight(5));
                 Console.Write(item.Name.PadRight(21));
                 Console.Write(item.Price.ToString("C").PadRight(8));
-                Console.Write(item.Quantity);
-                Console.WriteLine();
+
+                if (item.Quantity == 0)
+                {
+                    Console.WriteLine("SOLD OUT");
+                }
+                else
+                {
+                    Console.WriteLine(item.Quantity);
+                }
+
             }
             Console.WriteLine();
-            Console.WriteLine("Press any key to continue");
+            Console.WriteLine("Press enter key to continue");
             Console.ReadLine();
         }
 
         private void OrderItems()
         {
-            Console.WriteLine("We're not done yet");
+            bool done = false;
+
+            while (!done)
+            {
+
+                Console.WriteLine("(1) Add Money");
+                Console.WriteLine("(2) Select Products");
+                Console.WriteLine("(3) Complete Transaction");
+                Console.WriteLine("Curernet Account Balance: " + balance);
+
+                string userInput = Console.ReadLine();
+
+                switch (userInput)
+                {
+                    case "1":
+                        AddMoney();
+                        break;
+                    case "2":
+                        SelectProduct();
+                        break;
+                    case "3":
+                        done = true;
+                        break;
+                    default:
+                        Console.WriteLine("Please read the instructions");
+                        break;
+                }
+            }
+
         }
+        public void AddMoney()
+        {
+            Console.WriteLine("Please enter the amount (Max-Amount = 4200): ");
+            string answer = Console.ReadLine();
+
+            decimal deposit = decimal.Parse(answer);
+
+            if (deposit < 0)
+            {
+                Console.WriteLine("You cannot deposit negative amount");
+            }
+
+            else if (balance + deposit > 4200)
+            {
+                Console.WriteLine("The current Account Balance cannot exceed $4200");
+            }
+
+            else
+            {
+                balance += deposit;
+            }
+
+        }
+
+        public void SelectProduct()
+        {
+
+        }
+
+
     }
 }

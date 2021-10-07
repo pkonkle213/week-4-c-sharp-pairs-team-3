@@ -40,6 +40,7 @@ namespace Capstone.Classes
             catch (IOException ex)
             {
                 Console.WriteLine("Problem reading from " + filePath);
+                Console.WriteLine(ex.Message);
             }
 
         }
