@@ -12,6 +12,7 @@ namespace Capstone.Classes
     {
         private Catering catering = new Catering();
         private FileAccess fileAccess = new FileAccess();
+        private OrderedItems stuffOrdered = new OrderedItems();
 
         private decimal balance = 0M;
 
@@ -20,7 +21,7 @@ namespace Capstone.Classes
             fileAccess.LoadMenu(catering);
 
             bool done = false;
-            
+
             while (!done)
             {
                 Console.WriteLine("Welcome to Deerendra and Phillip's Capstone");
@@ -91,7 +92,7 @@ namespace Capstone.Classes
                 Console.WriteLine("(1) Add Money");
                 Console.WriteLine("(2) Select Products");
                 Console.WriteLine("(3) Complete Transaction");
-                Console.WriteLine("Curernet Account Balance: " + balance);
+                Console.WriteLine("Current Account Balance: " + balance);
 
                 string userInput = Console.ReadLine();
 
@@ -104,6 +105,7 @@ namespace Capstone.Classes
                         SelectProduct();
                         break;
                     case "3":
+                        ReportOrder();
                         done = true;
                         break;
                     default:
@@ -139,8 +141,6 @@ namespace Capstone.Classes
 
         public void SelectProduct()
         {
-            List<OrderItems> items = new List<OrderItems>();
-
             Console.WriteLine("Enter a product code");
             string productCode = Console.ReadLine();
 
@@ -161,32 +161,64 @@ namespace Capstone.Classes
                     {
                         Console.WriteLine("Not enough items to fulfill");
                     }
+                    else if (balance < quantityInt * item.Price)
+                    {
+                        Console.WriteLine("Please deposit more money.");
+                    }
                     else
                     {
                         item.Quantity -= quantityInt;
+                        OrderedItems ordered = new OrderedItems();
+                        ordered.OrderedQuantity = quantityInt;
+                        ordered.Type = item.Type;
+                        ordered.Name = item.Name;
+                        ordered.Price = item.Price;
 
-                        OrderItems orderedItems = new OrderItems();
+                        stuffOrdered.AddItem(ordered);
 
-                        orderedItems.OrderQuantity = quantityInt;
-                        orderedItems.Type = item.Type;
-                        orderedItems.Code = item.Code;
-                        orderedItems.Name = item.Name;
-                        orderedItems.Price = item.Price;
+                        balance -= quantityInt * item.Price;
                     }
                 }
-
-
             }
 
             if (exists == false)
             {
                 Console.WriteLine("The product doesn't exist");
             }
-
-
-
         }
 
+        public void ReportOrder()
+        {
+            decimal orderTotal = 0;
+            foreach (OrderedItems item in this.stuffOrdered.AllItems)
+            {
+                 {
+                    Console.Write(item.OrderedQuantity.ToString().PadRight(5));
+                    Console.Write(item.Type.PadRight(5));
+                    Console.Write(item.Name.PadRight(21));
+                    Console.Write(item.Price.ToString("C").PadRight(10));
+                    Console.Write(item.totalPrice.ToString("C").PadRight(10));
+                    orderTotal += item.totalPrice;
+                    Console.WriteLine();
+                 }
 
+            }
+            Console.WriteLine("Your total today: " + orderTotal.ToString("C"));
+            
+
+            //Make change
+            List<decimal> change = stuffOrdered.MakeChange(balance);
+            Console.WriteLine("Your change is: ");
+            Console.WriteLine(change[0] + " twenties");
+            Console.WriteLine(change[1] + " tens");
+            Console.WriteLine(change[2] + " fives");
+            Console.WriteLine(change[3] + " ones");
+            Console.WriteLine(change[4] + " quarters");
+            Console.WriteLine(change[5] + " dimes");
+            Console.WriteLine(change[6] + " nickles");
+            Console.WriteLine();
+            balance = 0;
+            Console.ReadLine();
+        }
     }
 }
