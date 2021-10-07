@@ -11,7 +11,22 @@ namespace Capstone.Classes
     {
         private List<CateringItem> items = new List<CateringItem>();
         
+        public Catering() : base()
+        {
 
+        }
    
+        public void AddItem(CateringItem item)
+        {
+            items.Add(item);
+        }
+
+        public CateringItem[] AllItems
+        {
+            get
+            {
+                return items.ToArray();
+            }
+        }
     }
 }
