@@ -254,15 +254,7 @@ namespace Capstone.Classes
             //Writes the action and old balance to Log.txt and resets the balance
             fileAccess.SavePoint("GIVE CHANGE:", balance, 0M);
             balance = 0;
-            /*
-             * 
-             * 
-             * Do we need to clear the shopping list to ensure that the next run through is clear?
-             * Might need to check with Matt on this
-             * 
-             * 
-             */
-
+            stuffOrdered.ClearList();
             Console.ReadLine();
         }
     }

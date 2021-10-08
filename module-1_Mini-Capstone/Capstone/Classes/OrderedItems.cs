@@ -24,9 +24,14 @@ namespace Capstone.Classes
                 return orderedItems.ToArray();
             }
         }
-        public void AddItem(OrderedItems item)
+        public void AddItem(OrderedItems item) // Adds the ordered item to the list for checkout
         {
             orderedItems.Add(item);
+        }
+
+        public void ClearList() // This clears this list of purchased items to start fresh
+        {
+            orderedItems.Clear();
         }
         
         // To achieve the smallest number of bills and coins, we use integer division to get the whole number,
