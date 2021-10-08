@@ -13,6 +13,7 @@ namespace Capstone.Classes
         // All external data files for this application should live in this directory.
         // You will likely need to create this directory and copy / paste any needed files.
         public string filePath = @"C:\Catering\cateringsystem.csv";
+        public string fileOutPath = @"C:\Catering\Log.txt";
 
         public void LoadMenu(Catering items)
         {
@@ -23,7 +24,7 @@ namespace Capstone.Classes
                 {
                     while (!reader.EndOfStream)
                     {
-                        string line = reader.ReadLine();
+                        string line = reader.ReadLine(); // Reads the line of the file and splits it into usable pieces
 
                         string[] parts = line.Split("|");
 
@@ -33,7 +34,7 @@ namespace Capstone.Classes
                         item.Name = parts[2];
                         item.Price = decimal.Parse(parts[3]);
 
-                        items.AddItem(item);
+                        items.AddItem(item); // Calls the AddItem method to add to the list of available items to order
                     }
                 }
             }
@@ -43,6 +44,21 @@ namespace Capstone.Classes
                 Console.WriteLine(ex.Message);
             }
 
+        }
+
+        public void SavePoint(string actionTaken, decimal delta, decimal after)
+        {
+            try
+            {
+                using (StreamWriter writer = new StreamWriter(fileOutPath,true)) // Opens a file to write a log (or begins the file). Notes the date, action taken, the difference, and the new total
+                {
+                    writer.WriteLine($"{DateTime.Now} {actionTaken} {delta.ToString("C")} {after.ToString("C")}");
+                }
+            }
+            catch (FileNotFoundException ex)
+            {
+                Console.WriteLine("No file or folder found." + ex.Message);
+            }
         }
     }
 }

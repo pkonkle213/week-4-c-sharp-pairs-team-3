@@ -14,12 +14,12 @@ namespace Capstone.Classes
 
         }
    
-        public void AddItem(CateringItem item)
+        public void AddItem(CateringItem item) // This method adds the passed in variable to the list of catering items avaiable to order
         {
             items.Add(item);
         }
 
-        public CateringItem[] AllItems
+        public CateringItem[] AllItems // Converts the list to an array to call later
         {
             get
             {

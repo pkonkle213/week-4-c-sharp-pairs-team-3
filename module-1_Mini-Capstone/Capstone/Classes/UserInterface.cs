@@ -10,6 +10,7 @@ namespace Capstone.Classes
     /// </summary>
     public class UserInterface
     {
+        //Creating new classes to call their methods
         private Catering catering = new Catering();
         private FileAccess fileAccess = new FileAccess();
         private OrderedItems stuffOrdered = new OrderedItems();
@@ -18,12 +19,15 @@ namespace Capstone.Classes
 
         public void RunMainMenu()
         {
+            //Initializes the menu of items
             fileAccess.LoadMenu(catering);
 
             bool done = false;
 
+            // First user input
             while (!done)
             {
+                Console.Clear();
                 Console.WriteLine("Welcome to Deerendra and Phillip's Capstone");
                 Console.WriteLine();
                 Console.WriteLine("What do you want to do?");
@@ -57,6 +61,8 @@ namespace Capstone.Classes
         }
         private void DisplayItems()
         {
+            //Displaying all items to the console that are available to order and those that are sold out
+            Console.WriteLine();
             Console.WriteLine("Type Code Name                 Price   Quantity");
             Console.WriteLine("---- ---- ----                 -----   --------");
 
@@ -80,21 +86,23 @@ namespace Capstone.Classes
             Console.WriteLine();
             Console.WriteLine("Press enter key to continue");
             Console.ReadLine();
+            Console.Clear();
         }
 
         private void OrderItems()
         {
             bool done = false;
-
+            // Second menu for order related actions
             while (!done)
             {
-
+                Console.WriteLine();
                 Console.WriteLine("(1) Add Money");
                 Console.WriteLine("(2) Select Products");
                 Console.WriteLine("(3) Complete Transaction");
-                Console.WriteLine("Current Account Balance: " + balance);
-
+                Console.WriteLine("Current Account Balance: " + balance.ToString("C"));
+                Console.WriteLine();
                 string userInput = Console.ReadLine();
+                Console.WriteLine();
 
                 switch (userInput)
                 {
@@ -117,8 +125,18 @@ namespace Capstone.Classes
         }
         public void AddMoney()
         {
-            Console.WriteLine("Please enter the amount (Max-Amount = 4200): ");
+            Console.WriteLine("Please enter the amount (Max-Amount = $4200): "); // Thoughts on: (Max-Amount = {4200-balance})??
             string answer = Console.ReadLine();
+            /*
+             * 
+             * 
+             * 
+             * 
+             * Need to ensure that the user entered a valid number and not a letter
+             * 
+             * 
+             * 
+             */
 
             decimal deposit = decimal.Parse(answer);
 
@@ -126,32 +144,40 @@ namespace Capstone.Classes
             {
                 Console.WriteLine("You cannot deposit negative amount");
             }
-
             else if (balance + deposit > 4200)
             {
-                Console.WriteLine("The current Account Balance cannot exceed $4200");
+                Console.WriteLine("The current Account Balance cannot exceed $4,200");
             }
-
             else
             {
                 balance += deposit;
+                fileAccess.SavePoint("ADD MONEY:", deposit, balance);
             }
-
         }
 
         public void SelectProduct()
         {
+            //Getting the user's input for the order
             Console.WriteLine("Enter a product code");
             string productCode = Console.ReadLine();
+            Console.WriteLine();
 
             Console.WriteLine("Enter Quantity");
             string quantity = Console.ReadLine();
-
+            Console.WriteLine();
+            /*
+             * 
+             * 
+             * Needs to error check for the customer being rude
+             * 
+             * 
+             * 
+             */
             int quantityInt = int.Parse(quantity);
 
             bool exists = false;
 
-            foreach (CateringItem item in this.catering.AllItems)
+            foreach (CateringItem item in this.catering.AllItems) // Scrolling through the array to find the item and check its stock
             {
                 if (productCode == item.Code)
                 {
@@ -167,21 +193,23 @@ namespace Capstone.Classes
                     }
                     else
                     {
-                        item.Quantity -= quantityInt;
+                        item.Quantity -= quantityInt; // Adjusting the stock, adding the item to the list of purchased items
                         OrderedItems ordered = new OrderedItems();
                         ordered.OrderedQuantity = quantityInt;
+                        ordered.Code = item.Code;
                         ordered.Type = item.Type;
                         ordered.Name = item.Name;
                         ordered.Price = item.Price;
 
                         stuffOrdered.AddItem(ordered);
 
-                        balance -= quantityInt * item.Price;
+                        balance -= quantityInt * item.Price; // Adjusting the user's balance, adding the item to the Log.txt file
+                        fileAccess.SavePoint($"{quantityInt} {ordered.Name} {ordered.Code}", quantityInt * item.Price, balance);
                     }
                 }
             }
 
-            if (exists == false)
+            if (exists == false) // If the foreach loop fails to find the item
             {
                 Console.WriteLine("The product doesn't exist");
             }
@@ -189,24 +217,33 @@ namespace Capstone.Classes
 
         public void ReportOrder()
         {
+            // The customer has chosen to complete this order
+            // Setting the total to 0 which will be added to as the list is looped through and displayed
+
             decimal orderTotal = 0;
+            Console.Clear();
+            Console.WriteLine("Today's order:");
+            Console.WriteLine();
+            Console.WriteLine("Quantity Type Name                 Unit Price Total Price");
+            Console.WriteLine("-------- ---- ----                 ---------- -----------");
             foreach (OrderedItems item in this.stuffOrdered.AllItems)
             {
-                 {
-                    Console.Write(item.OrderedQuantity.ToString().PadRight(5));
+                {
+                    Console.Write(item.OrderedQuantity.ToString().PadRight(9));
                     Console.Write(item.Type.PadRight(5));
                     Console.Write(item.Name.PadRight(21));
-                    Console.Write(item.Price.ToString("C").PadRight(10));
-                    Console.Write(item.totalPrice.ToString("C").PadRight(10));
+                    Console.Write(item.Price.ToString("C").PadRight(11));
+                    Console.Write(item.totalPrice.ToString("C"));
                     orderTotal += item.totalPrice;
                     Console.WriteLine();
-                 }
+                }
 
             }
+            Console.WriteLine();
             Console.WriteLine("Your total today: " + orderTotal.ToString("C"));
-            
+            Console.WriteLine();
 
-            //Make change
+            //Makes change and outputs the result
             List<decimal> change = stuffOrdered.MakeChange(balance);
             Console.WriteLine("Your change is: ");
             Console.WriteLine(change[0] + " twenties");
@@ -217,7 +254,19 @@ namespace Capstone.Classes
             Console.WriteLine(change[5] + " dimes");
             Console.WriteLine(change[6] + " nickles");
             Console.WriteLine();
+
+            //Writes the action and old balance to Log.txt and resets the balance
+            fileAccess.SavePoint("GIVE CHANGE:", balance, 0M);
             balance = 0;
+            /*
+             * 
+             * 
+             * Do we need to clear the shopping list to ensure that the next run through is clear?
+             * Might need to check with Matt on this
+             * 
+             * 
+             */
+
             Console.ReadLine();
         }
     }

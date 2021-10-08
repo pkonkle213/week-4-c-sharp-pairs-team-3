@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Capstone.Classes
 {
-    class OrderedItems : CateringItem
+    public class OrderedItems : CateringItem
     {
         public int OrderedQuantity { get; set; } = 0;
         public decimal totalPrice
@@ -15,7 +15,7 @@ namespace Capstone.Classes
             }
         }
 
-        List<OrderedItems> orderedItems = new List<OrderedItems>();
+        List<OrderedItems> orderedItems = new List<OrderedItems>(); // Creating a list specific to ordered items to recap when the customer checks out
 
         public OrderedItems[] AllItems
         {
@@ -28,8 +28,10 @@ namespace Capstone.Classes
         {
             orderedItems.Add(item);
         }
-
-        public List<decimal> MakeChange(decimal balance)
+        
+        // To achieve the smallest number of bills and coins, we use integer division to get the whole number,
+        // subtract that total from the balance, and use the remainer to calculate the next bill
+        public List<decimal> MakeChange(decimal balance) 
         {
             List<decimal> change = new List<decimal>();
             int twenties = (int)(balance / 20);
@@ -57,7 +59,6 @@ namespace Capstone.Classes
             change.Add(dimes);
 
             int nickles = (int)(balance / .05M);
-            balance -= .05M * nickles;
             change.Add(nickles);
 
             return change;

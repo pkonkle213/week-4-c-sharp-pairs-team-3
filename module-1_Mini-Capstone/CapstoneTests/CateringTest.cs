@@ -7,15 +7,22 @@ namespace CapstoneTests
     public class CateringTest
     {
         [TestMethod]
-        public void YourTestGoesHere()
+        [DataRow(1,5,5)]
+        [DataRow(100,500,50000)]
+        [DataRow(1,0,0)]
+        public void TotalPriceShouldSetRightProperty(int value1, int value2, double expected)
         {
             // Arrange 
-            Catering catering = new Catering();
+            OrderedItems thing = new OrderedItems();
 
             // Act
+            thing.OrderedQuantity = value1;
+            thing.Price = value2;
 
             // Assert
-            Assert.Inconclusive("Replace this test with a test of your own..."); // Inconclusive is a marker for when something cannot be tested
+            Assert.AreEqual(thing.totalPrice, (decimal)expected);
         }
+
+
     }
 }
