@@ -127,31 +127,27 @@ namespace Capstone.Classes
         {
             Console.WriteLine("Please enter the amount (Max-Amount = $4200): "); // Thoughts on: (Max-Amount = {4200-balance})??
             string answer = Console.ReadLine();
-            /*
-             * 
-             * 
-             * 
-             * 
-             * Need to ensure that the user entered a valid number and not a letter
-             * 
-             * 
-             * 
-             */
+            try // Making sure the user puts in a decimal instead of anything else
+            {
+                decimal deposit = decimal.Parse(answer);
 
-            decimal deposit = decimal.Parse(answer);
-
-            if (deposit < 0)
-            {
-                Console.WriteLine("You cannot deposit negative amount");
+                if (deposit < 0)
+                {
+                    Console.WriteLine("You cannot deposit negative amount");
+                }
+                else if (balance + deposit > 4200)
+                {
+                    Console.WriteLine("The current Account Balance cannot exceed $4,200");
+                }
+                else
+                {
+                    balance += deposit;
+                    fileAccess.SavePoint("ADD MONEY:", deposit, balance);
+                }
             }
-            else if (balance + deposit > 4200)
+            catch (FormatException ex)
             {
-                Console.WriteLine("The current Account Balance cannot exceed $4,200");
-            }
-            else
-            {
-                balance += deposit;
-                fileAccess.SavePoint("ADD MONEY:", deposit, balance);
+                Console.WriteLine("Please enter a valid amount of money.");
             }
         }
 
@@ -165,53 +161,53 @@ namespace Capstone.Classes
             Console.WriteLine("Enter Quantity");
             string quantity = Console.ReadLine();
             Console.WriteLine();
-            /*
-             * 
-             * 
-             * Needs to error check for the customer being rude
-             * 
-             * 
-             * 
-             */
-            int quantityInt = int.Parse(quantity);
-
-            bool exists = false;
-
-            foreach (CateringItem item in this.catering.AllItems) // Scrolling through the array to find the item and check its stock
+            try
             {
-                if (productCode == item.Code)
+
+                int quantityInt = int.Parse(quantity);
+
+                bool exists = false;
+
+                foreach (CateringItem item in this.catering.AllItems) // Scrolling through the array to find the item and check its stock
                 {
-                    exists = true;
-
-                    if (quantityInt > item.Quantity)
+                    if (productCode == item.Code)
                     {
-                        Console.WriteLine("Not enough items to fulfill");
-                    }
-                    else if (balance < quantityInt * item.Price)
-                    {
-                        Console.WriteLine("Please deposit more money.");
-                    }
-                    else
-                    {
-                        item.Quantity -= quantityInt; // Adjusting the stock, adding the item to the list of purchased items
-                        OrderedItems ordered = new OrderedItems();
-                        ordered.OrderedQuantity = quantityInt;
-                        ordered.Code = item.Code;
-                        ordered.Type = item.Type;
-                        ordered.Name = item.Name;
-                        ordered.Price = item.Price;
+                        exists = true;
 
-                        stuffOrdered.AddItem(ordered);
+                        if (quantityInt > item.Quantity)
+                        {
+                            Console.WriteLine("Not enough items to fulfill");
+                        }
+                        else if (balance < quantityInt * item.Price)
+                        {
+                            Console.WriteLine("Please deposit more money.");
+                        }
+                        else
+                        {
+                            item.Quantity -= quantityInt; // Adjusting the stock, adding the item to the list of purchased items
+                            OrderedItems ordered = new OrderedItems();
+                            ordered.OrderedQuantity = quantityInt;
+                            ordered.Code = item.Code;
+                            ordered.Type = item.Type;
+                            ordered.Name = item.Name;
+                            ordered.Price = item.Price;
 
-                        balance -= quantityInt * item.Price; // Adjusting the user's balance, adding the item to the Log.txt file
-                        fileAccess.SavePoint($"{quantityInt} {ordered.Name} {ordered.Code}", quantityInt * item.Price, balance);
+                            stuffOrdered.AddItem(ordered);
+
+                            balance -= quantityInt * item.Price; // Adjusting the user's balance, adding the item to the Log.txt file
+                            fileAccess.SavePoint($"{quantityInt} {ordered.Name} {ordered.Code}", quantityInt * item.Price, balance);
+                        }
                     }
                 }
-            }
 
-            if (exists == false) // If the foreach loop fails to find the item
+                if (exists == false) // If the foreach loop fails to find the item
+                {
+                    Console.WriteLine("The product doesn't exist");
+                }
+            }
+            catch (FormatException ex)
             {
-                Console.WriteLine("The product doesn't exist");
+                Console.WriteLine("Please enter a valid quantity (an integer).");
             }
         }
 
