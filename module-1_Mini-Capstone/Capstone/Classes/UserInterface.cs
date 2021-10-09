@@ -127,15 +127,18 @@ namespace Capstone.Classes
         {
             Console.WriteLine("Please enter the amount (Max-Amount = $4200): "); // Thoughts on: (Max-Amount = {4200-balance})??
             string answer = Console.ReadLine();
-            try // Making sure the user puts in a decimal instead of anything else
+            decimal num;
+            if (decimal.TryParse(answer, out num))
             {
+
                 decimal deposit = decimal.Parse(answer);
+                const decimal maxAmount = 4200M; // Making a constant for the maximum amount 
 
                 if (deposit < 0)
                 {
                     Console.WriteLine("You cannot deposit negative amount");
                 }
-                else if (balance + deposit > 4200)
+                else if (balance + deposit > maxAmount)
                 {
                     Console.WriteLine("The current Account Balance cannot exceed $4,200");
                 }
@@ -145,9 +148,9 @@ namespace Capstone.Classes
                     fileAccess.SavePoint("ADD MONEY:", deposit, balance);
                 }
             }
-            catch (FormatException ex)
+            else
             {
-                Console.WriteLine("Please enter a valid amount of money.");
+                Console.WriteLine("Please enter a valid amount of money");
             }
         }
 
@@ -161,9 +164,9 @@ namespace Capstone.Classes
             Console.WriteLine("Enter Quantity");
             string quantity = Console.ReadLine();
             Console.WriteLine();
-            try
+            int num;
+            if (int.TryParse(quantity, out num))
             {
-
                 int quantityInt = int.Parse(quantity);
 
                 bool exists = false;
@@ -205,7 +208,7 @@ namespace Capstone.Classes
                     Console.WriteLine("The product doesn't exist");
                 }
             }
-            catch (FormatException ex)
+            else
             {
                 Console.WriteLine("Please enter a valid quantity (an integer).");
             }
