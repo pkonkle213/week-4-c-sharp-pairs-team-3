@@ -125,7 +125,7 @@ namespace Capstone.Classes
         }
         public void AddMoney()
         {
-            Console.WriteLine("Please enter the amount (Max-Amount = $4200): "); // Thoughts on: (Max-Amount = {4200-balance})??
+            Console.WriteLine("Please enter the amount (Max-Amount = $4200): ");
             string answer = Console.ReadLine();
             decimal num;
             if (decimal.TryParse(answer, out num))
